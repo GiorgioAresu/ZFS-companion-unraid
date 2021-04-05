@@ -3,13 +3,13 @@ Tag="database"
 Cond="file_exists('/usr/sbin/zpool')"
 ---
 <style type="text/css">
-  .zfs_view {
+  .db-box1 {
     display: none
   }
 </style>
 
-<table id="zfs_view" class="dash_zfscompanion dashboard box1">
-  <thead sort='<?=++$N?>' class="sortable">
+<table id="db-box1" class="dash_zfscompanion dashboard box1">
+  <thead sort='965' class="sortable">
     <tr class='hidden'>
       <td></td>
       <td colspan='3'></td>
@@ -23,13 +23,13 @@ Cond="file_exists('/usr/sbin/zpool')"
         <div class='section'>_(ZFS)_<br>
           <span>_(Healthy)_: <span id='zfscompanion-healthy'></span></span><br><br>
         </div>
-        <i class='fa fa-fw chevron' id='zfs_view' onclick='toggleChevron("zfs_view",0)'></i>
+        <i class='fa fa-fw chevron' id='db-box1' onclick='toggleChevron("db-box1",0)'></i>
         <a href='/Dashboard/Settings/ZFSsettings' title="_(Go to ZFS settings)_"><i
             class='fa fa-fw fa-cog chevron'></i></a>
       </td>
       <td></td>
     </tr>
-    <tr class='zfs_view'>
+    <tr class='db-box1'>
       <td></td>
       <td colspan='3'>
         <span class='ups'>_(Pool)_:</span><span id='zfscompanion-name'></span><br>
@@ -58,12 +58,12 @@ Cond="file_exists('/usr/sbin/zpool')"
 
   $(function() {
     // append data from the table into the correct one
-    $("#zfs_view").append($(".dash_zfscompanion").html());
+    $("#db-box1").append($(".dash_zfscompanion").html());
     
     // reload toggle to get the correct state
     toggleView('dash_zfscompanion_toggle',true);
     
     // reload sorting to get the stored data (cookie)
-    sortTable($('#zfs_view'),$.cookie('zfs_view'));
+    sortTable($('#db-box1'),$.cookie('db-box1'));
   });
 </script>
