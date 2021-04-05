@@ -7,7 +7,7 @@
 <!ENTITY launch    "Dashboard">
 <!ENTITY gitURL    "https://github.com/&author;/&name;-unraid/main">
 <!ENTITY pluginURL "&gitURL;/&name;.plg">
-<!ENTITY md5       "">
+<!ENTITY md5       "55c55e113267660ef23e073175fc4eae">
 <!ENTITY pkgURL    "&gitURL;/pkg">
 <!ENTITY plgPATH   "/boot/config/plugins/&name;">
 <!ENTITY plgNAME   "&name;-&version;-x86_64">
