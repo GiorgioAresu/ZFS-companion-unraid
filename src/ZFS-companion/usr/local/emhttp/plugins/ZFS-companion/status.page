@@ -1,72 +1,69 @@
 Menu="Dashboard"
+Tag="database"
 Cond="file_exists('/usr/sbin/zpool')"
 ---
 <style type="text/css">
-#	.dash_zfscompanion_toggle {display:none;}	
-#	.dash_zfscompanion_header {padding-top: 20px}	
-	.dash_zfscompanion_section {
-		line-height:1.4em !important;
-		margin-left:-4px !important;
-	}
+  .zfs_view {
+    display: none
+  }
 </style>
-<table id="db-box1" class="dash_zfscompanion dashboard box1" style="display:none">
-    <thead sort="965" class="sortable">
-        <tr>
-            <td></td>
-            <td class="next dash_zfscompanion_header" colspan="3">
-                <div class="section dash_zfscompanion_section">ZFS
-                    </span>
-                    <br>
-                </div>
-            </td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Pool: <span id="zfscompanion-pool"></span></td>
-       </tr>
-       <tr>
-		<br>
-            <td>State: <span id="zfscompanion-state"></span></td>
-       </tr>
-       <tr>
-           	<br>
-            <td>Errors <span id="zfscompanion-errors"></span></td>
-       </tr>
-       <tr>
-                <br>
-            <td>Scan: <span id="zfscompanion-scan"></span></td>
-       </tr>
-       <tr>
-                <br>
-            <td>Config <span id="zfscompanion-config"></span></td>
-        </tr>
-    </tbody>
+
+<table id="zfs_view" class="dash_zfscompanion dashboard box1">
+  <thead sort='<?=++$N?>' class="sortable">
+    <tr class='hidden'>
+      <td></td>
+      <td colspan='3'></td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody sort='<?=$N?>' class='sortable'>
+    <tr>
+      <td></td>
+      <td colspan='3' class='next'><i class='icon-zfs'></i>
+        <div class='section'>_(ZFS)_<br>
+          <span>_(Healthy)_: <span id='zfscompanion-healthy'></span></span><br><br>
+        </div>
+        <i class='fa fa-fw chevron' id='zfs_view' onclick='toggleChevron("zfs_view",0)'></i>
+        <a href='/Dashboard/Settings/ZFSsettings' title="_(Go to ZFS settings)_"><i
+            class='fa fa-fw fa-cog chevron'></i></a>
+      </td>
+      <td></td>
+    </tr>
+    <tr class='zfs_view'>
+      <td></td>
+      <td colspan='3'>
+        <span class='ups'>_(Pool)_:</span><span id='zfscompanion-name'></span><br>
+        <span class='ups'>_(Status)_:</span><span id='zfscompanion-status'></span><br>
+      </td>
+      <td></td>
+    </tr>
+  </tbody>
 </table>
 
 <script>
-const zfscompanion_status = () => {
- $.getJSON("/plugins/ZFS-companion/status.php", (data) => {
-  if(data) {
-	$.each(data, function (key, data) {
-		$("#zfscompanion-"+key).html(data);
-    })
-  }
-<?if ($update):?>
-  setTimeout(zfscompanion_status, <?=max(abs($display["refresh"]),2000)?>);
-<?endif;?>
- });
-};
-$(zfscompanion_status);
+  const zfscompanion_status = () => {
+    $.getJSON("/plugins/ZFS-companion/status.php", (data) => {
+      if(data) {
+        $.each(data, function (key, data) {
+          $("#zfscompanion-"+key).html(data);
+          })
+        $("#zfscompanion-"+name).html(data.pools[0].name);
+      }
+      <?if ($update):?>
+        setTimeout(zfscompanion_status, <?=max(abs($display["refresh"]),5000)?>);
+      <?endif;?>
+    });
+  };
+  $(zfscompanion_status);
 
-$(function() {
-  // append data from the table into the correct one
-  $("#db-box1").append($(".dash_zfscompanion").html());
-  
-  // reload toggle to get the correct state
-  toggleView('dash_zfscompanion_toggle',true);
-  
-  // reload sorting to get the stored data (cookie)
-  sortTable($('#db-box1'),$.cookie('db-box1'));
-});
+  $(function() {
+    // append data from the table into the correct one
+    $("#zfs_view").append($(".dash_zfscompanion").html());
+    
+    // reload toggle to get the correct state
+    toggleView('dash_zfscompanion_toggle',true);
+    
+    // reload sorting to get the stored data (cookie)
+    sortTable($('#zfs_view'),$.cookie('zfs_view'));
+  });
 </script>
