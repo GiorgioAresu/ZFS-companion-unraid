@@ -1,23 +1,5 @@
 <?php
-function isHealthy() {
-  $stdout = shell_exec('zpool status -x 2>&1');
-  return strcmp(trim($stdout),'all pools are healthy') == 0;
-}
-
-function getPools() {
-  $fields = ['name','size','alloc','free','cap','health'];
-  $stdout = shell_exec('/usr/sbin/zpool list -Ho '.implode(',', $fields));
-  $lines = preg_split('/\n/', $stdout, NULL, PREG_SPLIT_NO_EMPTY);
-  $data = [];
-  foreach ($lines as $index => $line) {
-    $data[$index] = [];
-    $values = explode("\t", $line);
-    foreach ($fields as $fieldIndex => $fieldName) {
-      $data[$index][$fieldName] = $values[$fieldIndex];
-    }
-  }
-  return $data;
-}
+include 'include/zfs.php';
 
 $stdout = shell_exec('/usr/sbin/zpool status 2>&1');
 
@@ -42,3 +24,4 @@ $json = array(
 
 header('Content-Type: application/json');
 echo json_encode($json);
+?>

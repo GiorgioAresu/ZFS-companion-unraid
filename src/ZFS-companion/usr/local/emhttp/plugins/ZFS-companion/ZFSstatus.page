@@ -1,0 +1,129 @@
+Menu="Dashboard"
+Cond="file_exists('/usr/sbin/zpool')"
+---
+
+<?php
+$emhttp = "/usr/local/emhttp";
+require_once "${emhttp}/plugins/ZFS-companion/include/zfs.php";
+$healthy = isHealthy();
+$zpools = getPools();
+?>
+
+<style type="text/css">	
+  .dash_zfscompanion_header {padding-top: 20px}
+</style>
+
+<table id="db-box1" class="dash_zfscompanion dashboard box1" style="display:none">
+  <thead sort="876">
+    <tr class="hidden">
+      <td></td>
+      <td colspan="3"></td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody class="sortable" sort="876">
+    <tr>
+      <td></td>
+      <td class="next dash_zfscompanion_header" colspan="3">
+        <i class="icon-disks"></i>
+        <div class="section">
+          ZFS
+          <br>
+          <span>
+            <i id="zfscompanion-healthy-icon" style="vertical-align:baseline" class="fa fa-circle orb middle <? echo "$healthColors[$healthy]" ?>-orb"></i>
+            <span><? echo "$healthDescriptions[$healthy]" ?></span>
+          </span>
+          <br>
+          <br>
+        </div>
+        <i class="fa fa-fw chevron mt0" id="dash_zfscompanion_toggle" onclick="toggleChevron('dash_zfscompanion_toggle',0)"></i>
+        <!-- <a href="/Settings/ZFScompanionSettings" id="dash_zfscompanion_settings" title="Go to ZFS Companion settings">
+          <i class="fa fa-fw fa-cog chevron mt0"></i>
+        </a> -->
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <span class="header">Pool</span>
+      </td>
+      <td>
+        <span class="header"><?echo $fieldLabels['health']?></span>
+      </td>
+      <td>
+        <span class="header">Last scrub</span>
+      </td>
+      <td></td>
+    </tr>
+    <?foreach ($zpools as $name => $pool):?>
+    <tr>
+      <td></td>
+      <td>
+          <span><?echo $name?></span>
+      </td>
+      <td>
+        <span
+          class="<?if (array_key_exists($pool['health'], $statusColors)) echo $statusColors[$pool['health']].'-text'?>">
+          <?echo $pool['health']?>
+        </span>
+      </td>
+      <td></td>
+      <td></td>
+    </tr>
+    <?endforeach;?>
+  </tbody>
+</table>
+
+<script>
+function zpoolSelect(name) {
+  $.cookie('zpool_select',name,{expires:3650});
+  zpool_select = name;
+  //timestamp = 0, rx_bytes = 0, tx_bytes = 0;
+}
+
+  // const updateHealth = healthy => {
+  //   console.log(healthy)
+    
+  //   switch(healthy) {
+  //     case true:
+  //       $('#zfscompanion-healthy-icon').addClass('green-orb').removeClass('grey-orb red-orb')
+  //       $('#zfscompanion-healthy-text').html('Healthy')
+  //       break;
+  //     case false:
+  //       $('#zfscompanion-healthy-icon').addClass('red-orb').removeClass('grey-orb green-orb')
+  //       $('#zfscompanion-healthy-text').html('Unhealthy')
+  //       break;
+  //     default:
+  //       $('#zfscompanion-healthy-icon').addClass('grey-orb').removeClass('green-orb red-orb')
+  //       $('#zfscompanion-healthy-text').html('Unknown')
+  //   }
+  // }
+
+  const zfscompanion_status = () => {
+    $.getJSON("/plugins/ZFS-companion/ZFSstatus.php", (data) => {
+      if(data) {
+        $.each(data, function (key, data) {
+          //$("#zfscompanion-"+key).html(data);
+        })
+        // $("#zfscompanion-name").html(data.pools[0].name);
+        //updateHealth(data.healthy);
+      }
+      <?if ($update):?>
+        setTimeout(zfscompanion_status, <?=max(abs($display["refresh"]),2000)?>);
+      <?endif;?>
+    });
+  };
+  $(zfscompanion_status);
+
+  $(function() {
+    // append data from the table into the correct one
+    $("#db-box1").append($(".dash_zfscompanion").html());
+    
+    // reload toggle to get the correct state
+    toggleView('dash_zfscompanion_toggle',true);
+    
+    // reload sorting to get the stored data (cookie)
+    sortTable($('#db-box1'),$.cookie('db-box1'));
+  });
+</script>
