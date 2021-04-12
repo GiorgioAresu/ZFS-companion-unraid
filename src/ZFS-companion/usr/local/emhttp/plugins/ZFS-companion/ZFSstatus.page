@@ -1,0 +1,99 @@
+Menu="Dashboard"
+Cond="file_exists('/usr/sbin/zpool')"
+---
+<?php
+$emhttp = "/usr/local/emhttp";
+require_once "${emhttp}/plugins/ZFS-companion/include/zfs.php";
+$url = "/plugins/ZFS-companion/include/zupdate.php";
+$zpoolsNames = getPoolNames();
+?>
+
+<style type="text/css">	
+  .dash_zfscompanion_header {padding-top: 20px}
+  .dash_zfscompanion_wrap {white-space: pre-wrap}
+</style>
+
+<table id="db-box1" class="dash_zfscompanion dashboard box1" style="display:none">
+  <thead sort="876">
+    <tr class="hidden">
+      <td></td>
+      <td colspan="3"></td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody class="sortable" sort="876">
+    <tr>
+      <td></td>
+      <td class="next dash_zfscompanion_header" colspan="3">
+        <i class="icon-disks"></i>
+        <div class="section">
+          ZFS
+          <br>
+          <span id="zfscompanion-healthy-icon">---</span>
+          <br>
+          <br>
+        </div>
+        <i class="fa fa-fw chevron mt0" id="dash_zfscompanion_toggle" onclick="toggleChevron('dash_zfscompanion_toggle',0)"></i>
+        <!-- <a href="/Settings/ZFScompanionSettings" id="dash_zfscompanion_settings" title="Go to ZFS Companion settings">
+          <i class="fa fa-fw fa-cog chevron mt0"></i>
+        </a> -->
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <span class="header">Pool</span>
+      </td>
+      <td>
+        <span class="header"><?echo $fieldLabels['health']?></span>
+      </td>
+      <td>
+        <span class="header">Last scrub</span>
+      </td>
+      <td></td>
+    </tr>
+    <?foreach ($zpoolsNames as $name):?>
+    <tr>
+      <td></td>
+      <td>
+          <span><?echo $name?></span>
+      </td>
+      <td id="zfscompanion-<?echo $name?>-status">
+        <span>---</span>
+      </td>
+      <td id="zfscompanion-<?echo $name?>-scan" class="dash_zfscompanion_wrap">
+        <span>---</span>
+      </td>
+      <td></td>
+    </tr>
+    <?endforeach;?>
+  </tbody>
+</table>
+
+<script>
+  function zupdate30() {
+    $.post('<?=$url?>',{cmd:'healthy'},function(data) {$('#zfscompanion-healthy-icon').html(data);});
+    $.post('<?=$url?>',{cmd:'summary'},function(data) {
+      data.split('\n').forEach(pool => {
+        const poolData = pool.split('\t')
+        $(`#zfscompanion-${poolData[0]}-status`).html(poolData[1]);
+        $(`#zfscompanion-${poolData[0]}-scan`).html(poolData[2]);
+      })
+      setTimeout(zupdate30, 30000);
+    });
+  }
+
+  $(function() {
+    // append data from the table into the correct one
+    $("#db-box1").append($(".dash_zfscompanion").html());
+
+    // reload toggle to get the correct state
+    toggleView('dash_zfscompanion_toggle',true);
+
+    // reload sorting to get the stored data (cookie)
+    sortTable($('#db-box1'),$.cookie('db-box1'));
+
+    zupdate30();
+  });
+</script>

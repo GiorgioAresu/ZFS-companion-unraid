@@ -3,11 +3,11 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ZFS-companion">
 <!ENTITY author    "GiorgioAresu">
-<!ENTITY version   "2021.04.06">
+<!ENTITY version   "2021.04.13">
 <!ENTITY launch    "Dashboard">
 <!ENTITY gitURL    "https://github.com/&author;/&name;-unraid/raw/main">
 <!ENTITY pluginURL "&gitURL;/&name;.plg">
-<!ENTITY md5       "584eb155c0555a1354d13f7c9edfb6d8">
+<!ENTITY md5       "aefae843cb75e78e2138c3d3cbb919f9">
 <!ENTITY pkgURL    "&gitURL;/pkg">
 <!ENTITY plgPATH   "/boot/config/plugins/&name;">
 <!ENTITY plgNAME   "&name;-&version;-x86_64">
@@ -15,7 +15,7 @@
 ]>
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.8.0">
   <CHANGES>
-    ###2021.04.05
+    ###2021.04.13
     - Initial release
   </CHANGES>
 
