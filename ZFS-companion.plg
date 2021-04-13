@@ -3,12 +3,12 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name       "ZFS-companion">
 <!ENTITY author     "GiorgioAresu">
-<!ENTITY version    "2021.04.13">
+<!ENTITY version    "2021.04.13a">
 <!ENTITY launch     "Dashboard">
 <!ENTITY gitURL     "https://github.com/&author;/&name;-unraid/raw/main">
 <!ENTITY pluginURL  "&gitURL;/&name;.plg">
 <!ENTITY supportURL "https://forums.unraid.net/topic/">
-<!ENTITY md5        "aefae843cb75e78e2138c3d3cbb919f9">
+<!ENTITY md5        "5ac6a489f686a80288035839c40588d3">
 <!ENTITY pkgURL     "&gitURL;/pkg">
 <!ENTITY plgPATH    "/boot/config/plugins/&name;">
 <!ENTITY plgNAME    "&name;-&version;-x86_64">
@@ -24,6 +24,9 @@
   min="6.8.0"
   >
   <CHANGES>
+    ###2021.04.13a
+    - Fix missing data
+
     ###2021.04.13
     - Initial release
   </CHANGES>

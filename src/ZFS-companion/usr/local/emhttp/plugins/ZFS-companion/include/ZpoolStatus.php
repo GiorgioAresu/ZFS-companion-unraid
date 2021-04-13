@@ -35,7 +35,7 @@ function cleanup($matched) {
 }
 
 function getPoolsStatus($pool = '') {
-  $regex = "/(?(DEFINE)(?'value'(?:.*(?! *[a-z]+: ))))\s*pool: (?'pool'\g'value')\n\s*state: (?'state'\g'value')\n\s*status: (?'status'\g'value')\n\s*action: (?'action'\g'value')\n\s*scan: (?'scan'\g'value')\n\s*config:\n\n(?'config'\g'value')\n\s*errors: (?'errors'\g'value')/s";
+  $regex = "/(?(DEFINE)(?'value'(?:.*(?! *[a-z]+: ))))\s*pool: (?'pool'\g'value')\n\s*state: (?'state'\g'value')\n(?:\s*status: (?'status'\g'value')\n)?(?:\s*action: (?'action'\g'value')\n)?\s*scan: (?'scan'\g'value')\n\s*config:\n\n(?'config'\g'value')\n\s*errors: (?'errors'\g'value')/sU";
   $stdout = shell_exec('/usr/sbin/zpool status -v '.$pool.' 2>&1');
   preg_match_all($regex, $stdout, $matches, PREG_SET_ORDER);
   $cleaned = array_map('cleanup', $matches);
