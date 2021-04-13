@@ -23,13 +23,13 @@
   support="&supportURL;"
   min="6.8.0"
   >
-  <CHANGES>
-    ###2021.04.13a
-    - Fix missing data
+<CHANGES>
+###2021.04.13a
+- Fix missing data
 
-    ###2021.04.13
-    - Initial release
-  </CHANGES>
+###2021.04.13
+- Initial release
+</CHANGES>
 
   <!-- SOURCE FILE -->
   <FILE Name="&plgPATH;/&plgNAME;.txz" Min="6.4" Run="upgradepkg --install-new">
