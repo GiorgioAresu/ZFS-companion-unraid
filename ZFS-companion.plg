@@ -3,12 +3,12 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name       "ZFS-companion">
 <!ENTITY author     "GiorgioAresu">
-<!ENTITY version    "2021.04.13a">
+<!ENTITY version    "2021.04.13b">
 <!ENTITY launch     "Dashboard">
 <!ENTITY gitURL     "https://github.com/&author;/&name;-unraid/raw/main">
 <!ENTITY pluginURL  "&gitURL;/&name;.plg">
 <!ENTITY supportURL "https://forums.unraid.net/topic/105683-plugin-zfs-companion/">
-<!ENTITY md5        "5ac6a489f686a80288035839c40588d3">
+<!ENTITY md5        "d52baa5317d5ecbe9768d03bd49ddda9">
 <!ENTITY pkgURL     "&gitURL;/pkg">
 <!ENTITY plgPATH    "/boot/config/plugins/&name;">
 <!ENTITY plgNAME    "&name;-&version;-x86_64">
@@ -24,8 +24,11 @@
   min="6.8.0"
   >
   <CHANGES>
+    ###2021.04.13b
+    - Fix issue with multiple pools
+
     ###2021.04.13a
-    - Fix missing data
+    - Fix missing data for healthy pools
 
     ###2021.04.13
     - Initial release

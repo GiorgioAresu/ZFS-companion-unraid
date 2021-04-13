@@ -28,7 +28,7 @@ switch ($_POST['cmd']) {
         "<span class=\"".$colorClass."\">".$pool['state']."</span>",
         "<span>".$pool['scan']."</span>",
       );
-      echo implode("\t", $output);
+      echo implode("\t", $output)."\n";
     };
     break;
   case 'status':
