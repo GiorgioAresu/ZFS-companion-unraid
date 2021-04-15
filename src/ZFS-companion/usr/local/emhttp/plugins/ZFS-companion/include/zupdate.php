@@ -1,10 +1,6 @@
 <?
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/webGui';
 
-// add translations
-$_SERVER['REQUEST_URI'] = 'dashboard';
-require_once "$docroot/webGui/include/Translations.php";
-
 require_once "$docroot/webGui/include/Helpers.php";
 
 require_once "/usr/local/emhttp/plugins/ZFS-companion/include/constants.php";
@@ -38,16 +34,16 @@ switch ($_POST['cmd']) {
       echo implode("\t", $output)."\n";
     };
     break;
-  case 'status':
-    $status=getPoolsStatus();
-    $names = explode(',',$_POST['names']);
-    switch ($_POST['com']) {
-      case 'smb':
-        exec("LANG='en_US.UTF8' lsof -Owl /mnt/disk[0-9]* 2>/dev/null|awk '/^shfs/ && \$0!~/\.AppleD(B|ouble)/ && \$5==\"REG\"'|awk -F/ '{print \$4}'",$lsof);
-        $counts = array_count_values($lsof); $count = [];
-        foreach ($names as $name) $count[] = $counts[$name] ?? 0;
-        echo implode("\0",$count);
-        break;
-      }
-    break;
+  // case 'status':
+  //   $status=getPoolsStatus();
+  //   $names = explode(',',$_POST['names']);
+  //   switch ($_POST['com']) {
+  //     case 'smb':
+  //       exec("LANG='en_US.UTF8' lsof -Owl /mnt/disk[0-9]* 2>/dev/null|awk '/^shfs/ && \$0!~/\.AppleD(B|ouble)/ && \$5==\"REG\"'|awk -F/ '{print \$4}'",$lsof);
+  //       $counts = array_count_values($lsof); $count = [];
+  //       foreach ($names as $name) $count[] = $counts[$name] ?? 0;
+  //       echo implode("\0",$count);
+  //       break;
+  //     }
+  //   break;
 }

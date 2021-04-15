@@ -3,12 +3,12 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name       "ZFS-companion">
 <!ENTITY author     "GiorgioAresu">
-<!ENTITY version    "2021.04.16">
+<!ENTITY version    "2021.04.16a">
 <!ENTITY launch     "Dashboard">
 <!ENTITY gitURL     "https://github.com/&author;/&name;-unraid/raw/main">
 <!ENTITY pluginURL  "&gitURL;/&name;.plg">
 <!ENTITY supportURL "https://forums.unraid.net/topic/105683-plugin-zfs-companion/">
-<!ENTITY md5        "815179e412d75ffbbff669310b7ac2b8">
+<!ENTITY md5        "5932264b02f3e36219c28e4382813a86">
 <!ENTITY pkgURL     "&gitURL;/pkg">
 <!ENTITY plgPATH    "/boot/config/plugins/&name;">
 <!ENTITY plgNAME    "&name;-&version;-x86_64">
@@ -24,6 +24,9 @@
   min="6.8.0"
   >
   <CHANGES>
+    ###2021.04.16a
+    - Unraid 6.8 compatibility
+
     ###2021.04.16
     - Show tooltip on ZFS general status
 
