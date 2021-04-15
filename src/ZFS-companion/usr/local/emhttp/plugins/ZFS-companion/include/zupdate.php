@@ -16,8 +16,15 @@ function my_unit($value,$unit) {
 }
 switch ($_POST['cmd']) {
   case 'healthy':
-    $healthy=isHealthy();
-    echo "<i id=\"zfscompanion-healthy-icon\" style=\"vertical-align:baseline\" class=\"fa fa-circle orb middle ".$healthColors[$healthy]."-orb\"></i><span>".$healthDescriptions[$healthy]."</span>";
+    $zfsHealth=getZfsHealth();
+    $healthy = $zfsHealth['healthy'];
+    $healthStatus = $zfsHealth['status'];
+    $orb = $healthColors[$healthy]."-orb";
+    $describeUnhealthy = function($status) {
+      return $status['pool'].': '.$status['status'];
+    };
+    $title = 'title="'.($healthy ? ucfirst($healthStatus) : implode('&#10;', array_map($describeUnhealthy, $healthStatus))).'"';
+    echo '<i id="zfscompanion-healthy-icon" style="vertical-align:baseline" class="fa fa-circle orb '.$orb.' middle" '.$title.'></i><span '.$title.'>'.$healthDescriptions[$healthy].'</span>';
     break;
   case 'summary':
     $summary=getPoolsStatus();

@@ -1,9 +1,14 @@
 <?php
 require_once 'constants.php';
+require_once 'ZpoolStatus.php';
 
-function isHealthy() {
+function getZfsHealth() {
   $stdout = shell_exec('zpool status -x 2>&1');
-  return strcmp(trim($stdout),'all pools are healthy') == 0;
+  $healthy = strcmp(trim($stdout),'all pools are healthy') == 0;
+  return array(
+    'healthy' => $healthy,
+    'status' => $healthy ? trim($stdout) : processPoolStatus($stdout),
+  );
 }
 
 function getPools() {
