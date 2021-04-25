@@ -1,5 +1,4 @@
 <?xml version='1.0' standalone='yes'?>
-
 <!DOCTYPE PLUGIN [
 <!ENTITY name       "ZFS-companion">
 <!ENTITY author     "GiorgioAresu">
@@ -14,52 +13,46 @@
 <!ENTITY plgNAME    "&name;-&version;-x86_64">
 <!ENTITY emhttp     "/usr/local/emhttp/plugins/&name;">
 ]>
-<PLUGIN
-  name="&name;"
-  author="&author;"
-  version="&version;"
-  launch="&launch;"
-  pluginURL="&pluginURL;"
-  support="&supportURL;"
-  min="6.8.0"
-  >
-  <CHANGES>
-    ###2021.04.25
-    - Allow to ignore specific health status via new settings page
 
-    ###2021.04.20
-    - Fix permissions
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" support="&supportURL;" min="6.8.0" >
 
-    ###2021.04.16a
-    - Unraid 6.8 compatibility
+<CHANGES>
+###2021.04.25
+- Allow to ignore specific health status via new settings page
 
-    ###2021.04.16
-    - Show tooltip on ZFS general status
+###2021.04.20
+- Fix permissions
 
-    ###2021.04.13b
-    - Fix issue with multiple pools
+###2021.04.16a
+- Unraid 6.8 compatibility
 
-    ###2021.04.13a
-    - Fix missing data for healthy pools
+###2021.04.16
+- Show tooltip on ZFS general status
 
-    ###2021.04.13
-    - Initial release
-  </CHANGES>
+###2021.04.13b
+- Fix issue with multiple pools
 
-  <!-- SOURCE FILE -->
-  <FILE Name="&plgPATH;/&plgNAME;.txz" Min="6.4" Run="upgradepkg --install-new">
-    <URL>&pkgURL;/&plgNAME;.txz</URL>
-    <MD5>&md5;</MD5>
-  </FILE>
+###2021.04.13a
+- Fix missing data for healthy pools
 
-  <!-- PLUGIN REMOVAL -->
-  <FILE Run="/bin/bash" Method="remove">
-    <INLINE>
-      echo "Removing &name;..."
-      removepkg &plgPATH;/*.txz
-      rm -rf &plgPATH;
-      rm -rf &emhttp;
-      echo "&name; has been removed"
-    </INLINE>
-  </FILE>
+###2021.04.13
+- Initial release
+</CHANGES>
+
+<!-- SOURCE FILE -->
+<FILE Name="&plgPATH;/&plgNAME;.txz" Min="6.4" Run="upgradepkg --install-new">
+<URL>&pkgURL;/&plgNAME;.txz</URL>
+<MD5>&md5;</MD5>
+</FILE>
+
+<!-- PLUGIN REMOVAL -->
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+echo "Removing &name;..."
+removepkg &plgPATH;/*.txz
+rm -rf &plgPATH;
+rm -rf &emhttp;
+echo "&name; has been removed"
+</INLINE>
+</FILE>
 </PLUGIN>
