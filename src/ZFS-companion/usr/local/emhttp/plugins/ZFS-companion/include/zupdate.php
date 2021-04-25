@@ -1,26 +1,27 @@
 <?
-$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/webGui';
+$plugin = "ZFS-companion";
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
 
 require_once "$docroot/webGui/include/Helpers.php";
 
-require_once "/usr/local/emhttp/plugins/ZFS-companion/include/constants.php";
-require_once "/usr/local/emhttp/plugins/ZFS-companion/include/zfs.php";
-require_once "/usr/local/emhttp/plugins/ZFS-companion/include/ZpoolStatus.php";
+require_once "$docroot/plugins/$plugin/include/constants.php";
+require_once "$docroot/plugins/$plugin/include/zfs.php";
+require_once "$docroot/plugins/$plugin/include/ZpoolStatus.php";
 
-function my_unit($value,$unit) {
-  return ($unit=='F' ? round(9/5*$value+32) : $value)." $unit";
-}
+$zfscompanion_cfg = parse_plugin_cfg($plugin,true);
+$zfscompanion_ignoredhealth = isset($zfscompanion_cfg['IGNORED_HEALTH']) ? $zfscompanion_cfg['IGNORED_HEALTH'] : "";
+
 switch ($_POST['cmd']) {
   case 'healthy':
     $zfsHealth=getZfsHealth();
     $healthy = $zfsHealth['healthy'];
     $healthStatus = $zfsHealth['status'];
-    $orb = $healthColors[$healthy]."-orb";
-    $describeUnhealthy = function($status) {
-      return $status['pool'].': '.$status['status'];
-    };
-    $title = 'title="'.($healthy ? ucfirst($healthStatus) : implode('&#10;', array_map($describeUnhealthy, $healthStatus))).'"';
-    echo '<i id="zfscompanion-healthy-icon" style="vertical-align:baseline" class="fa fa-circle orb '.$orb.' middle" '.$title.'></i><span '.$title.'>'.$healthDescriptions[$healthy].'</span>';
+    $healthSummary = $zfsHealth['summary'];
+    $regex = '/(\R)|(\\n)/';
+    $ignored = strcmp(implode('\n', preg_split($regex, $healthSummary)), implode('\n', preg_split($regex, $zfscompanion_ignoredhealth))) == 0;
+    $orb = $healthColors[$healthy || $ignored]."-orb";
+    $title = 'title="'.str_replace('\n', '&#10;', $healthSummary).'"';
+    echo '<i id="zfscompanion-healthy-icon" style="vertical-align:baseline" class="fa fa-circle orb '.$orb.' middle" '.$title.'></i><span '.$title.'>'.$healthDescriptions[$healthy || $ignored].'</span>';
     break;
   case 'summary':
     $summary=getPoolsStatus();
@@ -34,16 +35,4 @@ switch ($_POST['cmd']) {
       echo implode("\t", $output)."\n";
     };
     break;
-  // case 'status':
-  //   $status=getPoolsStatus();
-  //   $names = explode(',',$_POST['names']);
-  //   switch ($_POST['com']) {
-  //     case 'smb':
-  //       exec("LANG='en_US.UTF8' lsof -Owl /mnt/disk[0-9]* 2>/dev/null|awk '/^shfs/ && \$0!~/\.AppleD(B|ouble)/ && \$5==\"REG\"'|awk -F/ '{print \$4}'",$lsof);
-  //       $counts = array_count_values($lsof); $count = [];
-  //       foreach ($names as $name) $count[] = $counts[$name] ?? 0;
-  //       echo implode("\0",$count);
-  //       break;
-  //     }
-  //   break;
 }

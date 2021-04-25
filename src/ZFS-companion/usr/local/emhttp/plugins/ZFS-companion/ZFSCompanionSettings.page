@@ -1,0 +1,53 @@
+Menu="Utilities"
+Title="ZFS Companion"
+Icon="ZFS-companion.png"
+Tag="ZFS-companion.png"
+---
+<?php
+$plugin = "ZFS-companion";
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: '/usr/local/emhttp';
+require_once "plugins/$plugin/include/zfs.php";
+
+$zfscompanion_cfg = parse_plugin_cfg($plugin,true);
+$zfscompanion_ignoredhealth = isset($zfscompanion_cfg['IGNORED_HEALTH']) ? $zfscompanion_cfg['IGNORED_HEALTH'] : "";
+
+$zfsHealth = getZfsHealth();
+?>
+
+<script type="text/javascript">
+function ignoreCurrentStatus() {
+  $('#ignored_health').val("<?=$zfsHealth["summary"]?>").change();
+  $('#ignored_health_clear').prop("disabled", false);
+}
+function clearIgnoredStatus() {
+  $('#ignored_health').val("").change();
+  $('#ignored_health_clear').prop("disabled", true);
+}
+function checkIgnoredStatus() {
+  var isEmpty = $('#ignored_health').val() == "";
+  $('#ignored_health_clear').prop("disabled", isEmpty);
+}
+</script>
+
+<form markdown="1" method="POST" action="/update.php" target="progressFrame">
+<input type="hidden" name="#file" value="<?=$plugin.'/'.$plugin?>.cfg" />
+<!-- <input type="hidden" name="#section" value="health_override"> -->
+<div id="title" class="nocontrol">_(Health Status Override)_</div>
+_(Current Health)_:
+: <pre><?=str_replace('\n', '&#10;', $zfsHealth['summary'])?></pre>
+
+_(Ignored Health Status)_:
+: <textarea id="ignored_health" name="IGNORED_HEALTH" cols="40" rows="5" oninput='checkIgnoredStatus()')><?=$zfscompanion_ignoredhealth?></textarea>
+
+&nbsp;
+: <input type='button' id='ignored_health_ignore' value='Set to current status' <?php if ($zfsHealth['healthy'] == true) { ?> disabled <?php } ?> onclick='ignoreCurrentStatus()'>
+<input type='button' id='ignored_health_clear' value='Clear' <?php if ($zfscompanion_ignoredhealth == "") { ?> disabled <?php } ?> onclick='clearIgnoredStatus()'>
+
+:zc_settings_ignored_plug:
+> Override unhealthy status report. If the global health of the pools reports unhealty with this status, it will reported as healthy.
+It's useful when you don't want to act on a warning (ie. non-native block size), so you won't miss other errors.
+:end
+
+&nbsp;
+: <input id="btnApply" type="submit" value="Apply"><input type="button" value="Done" onClick="done()">
+</form>

@@ -4,10 +4,18 @@ require_once 'ZpoolStatus.php';
 
 function getZfsHealth() {
   $stdout = shell_exec('zpool status -x 2>&1');
-  $healthy = strcmp(trim($stdout),'all pools are healthy') == 0;
+  // $stdout = shell_exec('cat /usr/local/emhttp/plugins/ZFS-companion/include/test.txt 2>&1');
+  $cleanStdout = trim($stdout);
+  $describeUnhealthy = function($status) {
+    return $status['pool'].': '.$status['status'];
+  };
+  $healthy = strcmp($cleanStdout,'all pools are healthy') == 0;
+  $status = $healthy ? $cleanStdout : processPoolStatus($stdout);
+  $summary = $healthy ? ucfirst($cleanStdout) : implode('\n', array_map($describeUnhealthy, $status));
   return array(
     'healthy' => $healthy,
-    'status' => $healthy ? trim($stdout) : processPoolStatus($stdout),
+    'status' => $status,
+    'summary' => $summary,
   );
 }
 

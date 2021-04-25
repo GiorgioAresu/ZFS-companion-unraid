@@ -34,9 +34,9 @@ $zpoolsNames = getPoolNames();
           <br>
         </div>
         <i class="fa fa-fw chevron mt0" id="dash_zfscompanion_toggle" onclick="toggleChevron('dash_zfscompanion_toggle',0)"></i>
-        <!-- <a href="/Settings/ZFScompanionSettings" id="dash_zfscompanion_settings" title="Go to ZFS Companion settings">
+        <a href="/Settings/ZFSCompanionSettings" id="dash_zfscompanion_settings" title="Go to ZFS Companion settings">
           <i class="fa fa-fw fa-cog chevron mt0"></i>
-        </a> -->
+        </a>
       </td>
       <td></td>
     </tr>
