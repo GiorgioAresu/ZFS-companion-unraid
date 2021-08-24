@@ -35,7 +35,7 @@ function cleanup($matched) {
 }
 
 function processPoolStatus($stdout) {
-  $regex = "/(?(DEFINE)(?'value'(?:\N*(?:\n(?:(?: {8}|\t)\N*))*)))\s*pool: (?'pool'\g'value')\n\s*state: (?'state'\g'value')\n(?:\s*status: (?'status'\g'value')\n)?(?:\s*action: (?'action'\g'value')\n)?\s*scan: (?'scan'\g'value')\n\s*config:\n\n(?'config'\g'value')\n\s*errors: (?'errors'\g'value')/s";
+  $regex = "/(?(DEFINE)(?'value'(?:\N*(?:\n(?:(?: {8}|\t)\N*))*)))\s*pool: (?'pool'\g'value')\n\s*state: (?'state'\g'value')\n((?:\s*status: (?'status'\g'value')\n)?(?:\s*action: (?'action'\g'value')\n)?\s*scan: (?'scan'\g'value')\n)?\s*config:\n\n(?'config'\g'value')\n\s*errors: (?'errors'\g'value')/s";
   preg_match_all($regex, $stdout, $matches, PREG_SET_ORDER);
   $cleaned = array_map('cleanup', $matches);
   return $cleaned;
